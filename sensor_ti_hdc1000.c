@@ -8,6 +8,14 @@
 #define DBG_COLOR
 #include <rtdbg.h>
 
+#if defined(RT_VERSION_CHECK)
+    #if (RTTHREAD_VERSION >= RT_VERSION_CHECK(5, 0, 2))
+        #define RT_SIZE_TYPE   rt_ssize_t
+    #else
+        #define RT_SIZE_TYPE   rt_size_t
+    #endif
+#endif
+
 static int hdc1000_selftest(void);
 
 /***********  Common  *****************/
@@ -27,7 +35,7 @@ static rt_err_t _hdc1000_init(struct rt_sensor_intf *intf)
     return RT_EOK;
 }
 
-static rt_size_t hdc1000_fetch_data(struct rt_sensor_device *sensor, void *buf, rt_size_t len)
+static RT_SIZE_TYPE hdc1000_fetch_data(struct rt_sensor_device *sensor, void *buf, rt_size_t len)
 {
     struct rt_sensor_data *data = (struct rt_sensor_data *)buf;
     rt_uint16_t temp_value, humi_value;
